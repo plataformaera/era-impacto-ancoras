@@ -1,0 +1,25 @@
+name: Âncoras do ERA Impacto
+
+on:
+  schedule:
+    - cron: '25 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ancoras:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/buscar.mjs
+      - name: Grava as âncoras novas
+        run: |
+          git config user.name "era-impacto-ancoras"
+          git config user.email "contato@plataformaera.com"
+          git add ancoras ancoras.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "nada novo"; else git commit -m "Âncoras do ERA Impacto em $(date -u +%Y-%m-%dT%H:%MZ)" && git push; fi
