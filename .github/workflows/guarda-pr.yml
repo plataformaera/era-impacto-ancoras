@@ -80,8 +80,8 @@ jobs:
           else
             gh pr edit "$N" -R "$R" --add-label espera-arquiteta > /dev/null || true
             # a liberação vale para um commit só: comentário da conta da Arquiteta cujo corpo INTEIRO é o texto fixo que o
-            # comando do Lote grava (marca no meio de outro texto não vale); commit novo pede liberação nova
-            QUANDO=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select(.user.login == env.ARQUITETA and (.body | gsub("\r"; "") | rtrimstr("\n")) == ("<!-- guarda:liberado sha:" + env.SHA + " -->\nLiberado pela Arquiteta para o commit `" + env.SHA[0:7] + "` (Lote de liberação).")) | .created_at' | tail -1)
+            # comando do Lote grava (marca no meio de outro texto não vale) e que nunca foi editado; commit novo pede liberação nova
+            QUANDO=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select(.user.login == env.ARQUITETA and .updated_at == .created_at and (.body | gsub("\r"; "") | rtrimstr("\n")) == ("<!-- guarda:liberado sha:" + env.SHA + " -->\nLiberado pela Arquiteta para o commit `" + env.SHA[0:7] + "` (Lote de liberação).")) | .created_at' | tail -1)
             CATS=$(jq -r '.nomes | join("; ")' /tmp/trava.json)
             if [ -n "$QUANDO" ]; then
               selo success trava-de-risco "liberado pela Arquiteta em $QUANDO para o commit ${SHA:0:7}"
@@ -174,10 +174,11 @@ jobs:
           git diff -U30 --no-color "$BASE_SHA...$SHA" -- . ':(exclude)package-lock.json' ':(exclude)*.lock' > /tmp/pr.diff
           HASH=$(sha256sum /tmp/pr.diff | cut -c1-16)
           # o mesmo diff (ex.: PR trazido para o principal sem mudança própria) aproveita o veredito, sem nova consulta
-          # só vale o comentário que a própria guarda gravou (robô da nuvem ou conta da Arquiteta, pelo revisor do Mac)
+          # só vale o comentário que a própria guarda gravou (robô da nuvem ou conta da Arquiteta, pelo revisor do Mac);
+          # o veredito só se reaproveita de comentário que ninguém editou depois de gravado
           ID=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select((.user.login == "github-actions[bot]" or .user.login == env.ARQUITETA) and (.body | contains("<!-- guarda:revisor -->"))) | .id' | tail -1)
           ANTES=""; TOTAL_ANTES=0
-          if [ -n "$ID" ]; then
+          if [ -n "$ID" ] && [ "$(gh api "repos/$R/issues/comments/$ID" --jq '.updated_at == .created_at')" = true ]; then
             ANTES=$(gh api "repos/$R/issues/comments/$ID" --jq .body)
             TOTAL_ANTES=$(echo "$ANTES" | sed -n 's/.*<!-- custo_total:\([0-9.]*\) -->.*/\1/p' | head -1); TOTAL_ANTES=${TOTAL_ANTES:-0}
             if echo "$ANTES" | grep -q "<!-- diff:$HASH -->"; then
@@ -228,8 +229,8 @@ jobs:
             echo
             echo "Custo desta revisão: US\$ $C (acumulado no PR: US\$ $TOTAL)."
           } > /tmp/comentario.md
-          if [ -n "$ID" ]; then gh api -X PATCH "repos/$R/issues/comments/$ID" -F body=@/tmp/comentario.md > /dev/null
-          else gh pr comment "$N" -R "$R" --body-file /tmp/comentario.md > /dev/null; fi
+          # comentário novo a cada veredito: só comentário nunca editado vale para reaproveitar
+          gh pr comment "$N" -R "$R" --body-file /tmp/comentario.md > /dev/null
           if [ "$ALERTA" = true ]; then
             gh label create alerta-revisor -R "$R" --color C0392B --description "Texto no diff tentou orientar o revisor" 2>/dev/null || true
             gh pr edit "$N" -R "$R" --add-label alerta-revisor > /dev/null || true
