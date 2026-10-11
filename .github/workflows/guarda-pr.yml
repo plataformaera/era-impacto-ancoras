@@ -37,6 +37,9 @@ env:
 jobs:
   trava:
     name: trava de risco e ordem
+    # só PR aberto de dentro do próprio repositório: PR de fork (de fora da organização) não roda com segredo nem
+    # token de escrita; fica sem os selos e não entra
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
@@ -116,7 +119,7 @@ jobs:
 
   revisor:
     name: revisor independente
-    if: github.event.pull_request.draft == false && (github.event.action != 'labeled' && github.event.action != 'unlabeled' && github.event.action != 'auto_merge_enabled')
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.draft == false && (github.event.action != 'labeled' && github.event.action != 'unlabeled' && github.event.action != 'auto_merge_enabled')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     concurrency:
