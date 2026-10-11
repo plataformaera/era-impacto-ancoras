@@ -86,6 +86,9 @@ jobs:
             # PR para o ramo principal não muda o conteúdo e a liberação segue valendo; mudar uma linha pede liberação nova.
             # Só vale comentário desse aplicativo, nunca editado.
             PID=$(gh pr diff "$N" -R "$R" | git patch-id --verbatim | cut -d' ' -f1)
+            # arquivo binário entra pela assinatura do conteúdo (o diff de texto só diz "Binary files differ")
+            BIN=$(gh api "repos/$R/pulls/$N/files" --paginate --jq '.[] | select(.patch == null) | "\(.filename) \(.sha)"' | LC_ALL=C sort)
+            PID=$(printf '%s\n%s' "$PID" "$BIN" | sha1sum | cut -d' ' -f1)
             export PID
             QUANDO=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select(.user.login == env.LIBERACAO_LOGIN and .updated_at == .created_at and (.body | gsub("\r"; "") | rtrimstr("\n")) == ("<!-- guarda:liberado conteudo:" + env.PID + " -->\nLiberado pela Arquiteta (botão Liberar lote) para o conteúdo `" + env.PID[0:12] + "`.")) | .created_at' | tail -1)
             CATS=$(jq -r '.nomes | join("; ")' /tmp/trava.json)
