@@ -70,9 +70,9 @@ jobs:
             gh pr edit "$N" -R "$R" --remove-label espera-arquiteta > /dev/null 2>&1 || true
           else
             gh pr edit "$N" -R "$R" --add-label espera-arquiteta > /dev/null || true
-            # a liberação vale para um commit só: comentário da conta da Arquiteta que nomeia este commit (o comando do
-            # Lote de liberação grava o comentário e a etiqueta juntos); commit novo pede liberação nova
-            QUANDO=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select(.user.login == env.ARQUITETA and (.body | contains("<!-- guarda:liberado sha:" + env.SHA + " -->"))) | .created_at' | tail -1)
+            # a liberação vale para um commit só: comentário da conta da Arquiteta cujo corpo INTEIRO é o texto fixo que o
+            # comando do Lote grava (marca no meio de outro texto não vale); commit novo pede liberação nova
+            QUANDO=$(gh api "repos/$R/issues/$N/comments" --paginate --jq '.[] | select(.user.login == env.ARQUITETA and (.body | gsub("\r"; "") | rtrimstr("\n")) == ("<!-- guarda:liberado sha:" + env.SHA + " -->\nLiberado pela Arquiteta para o commit `" + env.SHA[0:7] + "` (Lote de liberação).")) | .created_at' | tail -1)
             CATS=$(jq -r '.nomes | join("; ")' /tmp/trava.json)
             if [ -n "$QUANDO" ]; then
               selo success trava-de-risco "liberado pela Arquiteta em $QUANDO para o commit ${SHA:0:7}"
