@@ -1,0 +1,30 @@
+{
+ "seq": 2,
+ "raiz": "38d5399f49d33e0c768265fb8cd45283ee14236027221608cc5e2ee55c2e4717",
+ "regra": "nivel0=sha256(0x00||folha); no=sha256(0x01||esq||dir); impar sobe; encadeada=sha256(anterior_hex||raiz_hex)",
+ "provas": [
+  {
+   "tipo": "pendente",
+   "bloco": null,
+   "quando": "2026-10-12T11:15:02.588Z",
+   "calendario": "https://a.pool.opentimestamps.org",
+   "ots_base64": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEIUuZBNIk3ZhUjldufOUk9zRysPpcnNBhC+m3p4l6SjczwCFueCwj9Q1TZCPAQLNq0cS3/HW01mHbqYUPHsAjwILXa5OIUznqXewPzfoB8zhz76XkFfVVNvq42pYzYL5mGCPAgDLWP0Abvh8FyeVposOc4iI5x1F+nsWv0acNjvYHdQecI8CANDgXgFa9VZczQaPC1Ps8Z6DkAmEQsU9K6b6nBbbuH9QjxBGrMwTbwCBH3rCmT7JKkAIPf4w0u+QyOLi1odHRwczovL2FsaWNlLmJ0Yy5jYWxlbmRhci5vcGVudGltZXN0YW1wcy5vcmc="
+  },
+  {
+   "tipo": "pendente",
+   "bloco": null,
+   "quando": "2026-10-12T11:15:03.437Z",
+   "calendario": "https://b.pool.opentimestamps.org",
+   "ots_base64": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEIUuZBNIk3ZhUjldufOUk9zRysPpcnNBhC+m3p4l6SjczwCK6shjitlOeACPAQgOw/rmf8MChQ9EZ4JyvomAjxIIJ8vbAt9fra3wNzlxmkgGm3rfxMtHzGiXbLulDA0S1TCPEgjtP2+Sgsk9neorKCFfhuZ8e8WICE87kYJDDn8mc7k+AI8CC9QS0L5TZ4wt1N9TDeIcXNQQYC1/mptdjLpoNW6YsrQQjxBGrMwTfwCKTN0PvKSyZGAIPf4w0u+QyOLCtodHRwczovL2JvYi5idGMuY2FsZW5kYXIub3BlbnRpbWVzdGFtcHMub3Jn"
+  }
+ ],
+ "quando": "2026-10-12T11:05:00.085859+00:00",
+ "anterior": "d759b8f0bca0dcaa102e88e957673fcc80a39acb22c297bc5aeaedcda487ed1e",
+ "n_folhas": 3,
+ "folhas_nivel0": [
+  "4010d05bb301fc302590e7f0af5dfabd4656d94db1ffd01290c79b9484ba87a1",
+  "58e6d76356b45497c1857de3fd61b811e2f699468e56d2d1fe40ad810bf9ddca",
+  "c4c177a9dd97e2c7324eba1a0344895b7b8000dc356a2ac0fa623636dd6dd233"
+ ],
+ "raiz_encadeada": "52e64134893766152395db9f39493dcd1cac3e9727341842fa6de9e25e928dcc"
+}
