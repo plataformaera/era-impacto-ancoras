@@ -1,0 +1,28 @@
+{
+ "seq": 6,
+ "raiz": "4cf6268208729740be2f75afa42e4563b2b692a3410a23c6fd191fc413809095",
+ "regra": "nivel0=sha256(0x00||folha); no=sha256(0x01||esq||dir); impar sobe; encadeada=sha256(anterior_hex||raiz_hex)",
+ "provas": [
+  {
+   "tipo": "pendente",
+   "bloco": null,
+   "quando": "2026-11-15T11:15:06.279Z",
+   "calendario": "https://a.pool.opentimestamps.org",
+   "ots_base64": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEI7F8ET+GLhh56WzIXQ8ja9qfW8NEFzdDh5VSQMHi8T23wCGuqtNGYB03ACPAQ9OFitgmkpfAo3Egc39Al+wjwIFGAgegYFLBQ6scovSMQfyXeSDdEN64whN9fo9XsuJLnCPAgg6kVZS9zHqV5pLu2CzA8AGVKSDJEkbckP+J0Uvje7eQI8QRq+ZQ68Ajr7MqpRb9vsgCD3+MNLvkMji4taHR0cHM6Ly9hbGljZS5idGMuY2FsZW5kYXIub3BlbnRpbWVzdGFtcHMub3Jn"
+  },
+  {
+   "tipo": "pendente",
+   "bloco": null,
+   "quando": "2026-11-15T11:15:08.237Z",
+   "calendario": "https://b.pool.opentimestamps.org",
+   "ots_base64": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEI7F8ET+GLhh56WzIXQ8ja9qfW8NEFzdDh5VSQMHi8T23wCLjAnXZpFbicCPAQjaWEE98Gfnx+wa0QAB6VJwjwIJlwmsDyhYki6DQembyyIj5xgu3J8yCAAdsoQOKl0lSbCPEguiHkEVloezfLJZ5lFUQIug1L/a77Xp7a2uzR1eF7HMkI8CA+aRt01v6TgueqIlaEEnQJ9/0K72Se82PPnNk8uYQFMQjxBGr5lDzwCPmh6tG7R4igAIPf4w0u+QyOLCtodHRwczovL2JvYi5idGMuY2FsZW5kYXIub3BlbnRpbWVzdGFtcHMub3Jn"
+  }
+ ],
+ "quando": "2026-11-15T11:05:00.061496+00:00",
+ "anterior": "c4a15077ff183a72a6b2ea2025a9c07872cf83685c709c81af537b58709612a7",
+ "n_folhas": 1,
+ "folhas_nivel0": [
+  "4cf6268208729740be2f75afa42e4563b2b692a3410a23c6fd191fc413809095"
+ ],
+ "raiz_encadeada": "ec5f044fe18b861e7a5b321743c8daf6a7d6f0d105cdd0e1e554903078bc4f6d"
+}
