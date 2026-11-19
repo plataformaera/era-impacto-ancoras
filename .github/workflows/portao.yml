@@ -57,12 +57,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Todos os jobs aprovados ou pulados
+      - name: Todos os jobs aprovados
         env:
           RESULTADOS: ${{ toJSON(needs) }}
         run: |
           echo "$RESULTADOS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
-          if echo "$RESULTADOS" | jq -e '[.[].result] | any(. == "failure" or . == "cancelled")' > /dev/null; then
-            echo "o portão fecha: há job com falha ou cancelado"; exit 1
+          # job com falha, cancelado ou pulado fecha o portão (decisão D2 de 23/10/2026, condição 4)
+          if echo "$RESULTADOS" | jq -e '[.[].result] | any(. != "success")' > /dev/null; then
+            echo "o portão fecha: há job com falha, cancelado ou pulado"; exit 1
           fi
           echo "o portão abre"
